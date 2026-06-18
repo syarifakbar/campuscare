@@ -4,8 +4,8 @@ const os = require('os');
 
 const seedDbPath = path.join(__dirname, '..', 'data', 'db.json');
 
-// Di Vercel, folder project read-only.
-// Jadi kalau online di Vercel, database runtime pakai /tmp.
+// Di Vercel, folder project bersifat read-only.
+// Jadi untuk kebutuhan demo online, database runtime disimpan di /tmp.
 // Kalau lokal, tetap pakai data/db.json.
 const runtimeDbPath = process.env.VERCEL
   ? path.join(os.tmpdir(), 'kampuscare-db.json')
@@ -67,7 +67,6 @@ function ensureDatabaseFile() {
   }
 }
 
-// Ini yang dibutuhkan server.js
 function initializeDatabase() {
   ensureDatabaseFile();
 }
@@ -98,8 +97,24 @@ function writeDatabase(data) {
   }
 }
 
+// Fungsi ini dipakai service lain untuk bikin ID baru.
+// Contoh: users, reports, categories, notifications.
+function createId(items) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return 1;
+  }
+
+  const maxId = items.reduce((max, item) => {
+    const currentId = Number(item.id) || 0;
+    return currentId > max ? currentId : max;
+  }, 0);
+
+  return maxId + 1;
+}
+
 module.exports = {
   initializeDatabase,
   readDatabase,
-  writeDatabase
+  writeDatabase,
+  createId
 };

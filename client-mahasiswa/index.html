@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KampusCare Mahasiswa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero-card">
+      <div>
+        <p class="eyebrow">Client Mahasiswa</p>
+        <h1>KampusCare</h1>
+        <p class="hero-text">Laporkan fasilitas kampus yang bermasalah dan pantau status penanganannya.</p>
+      </div>
+      <a class="hero-badge" href="/admin">Admin</a>
+    </section>
+
+    <section id="loginSection" class="panel login-panel">
+      <h2>Masuk Mahasiswa</h2>
+      <p class="muted">Demo akun: <b>mhs</b> / <b>mhs123</b></p>
+      <form id="loginForm" class="form-grid">
+        <label>
+          Username
+          <input id="usernameInput" type="text" value="mhs" required />
+        </label>
+        <label>
+          Password
+          <input id="passwordInput" type="password" value="mhs123" required />
+        </label>
+        <button type="submit">Masuk</button>
+      </form>
+      <div class="divider"><span>atau daftar akun mahasiswa</span></div>
+      <form id="registerForm" class="form-grid compact-form">
+        <label>
+          Nama
+          <input id="registerNameInput" type="text" placeholder="Nama mahasiswa" />
+        </label>
+        <label>
+          Username Baru
+          <input id="registerUsernameInput" type="text" placeholder="username" />
+        </label>
+        <label>
+          Password Baru
+          <input id="registerPasswordInput" type="password" placeholder="password" />
+        </label>
+        <button type="submit" class="secondary-button">Daftar</button>
+      </form>
+      <p id="loginMessage" class="message"></p>
+    </section>
+
+    <section id="dashboardSection" class="dashboard hidden">
+      <div class="topbar">
+        <div>
+          <p class="eyebrow">Dashboard Mahasiswa</p>
+          <h2 id="welcomeText">Halo</h2>
+        </div>
+        <button id="logoutButton" class="ghost-button">Keluar</button>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span>Total Laporan</span>
+          <strong id="totalReportsText">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Diproses</span>
+          <strong id="processingReportsText">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Selesai</span>
+          <strong id="doneReportsText">0</strong>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <section class="panel">
+          <h3>Buat Laporan Baru</h3>
+          <form id="reportForm" class="form-grid">
+            <label>
+              Judul Laporan
+              <input id="titleInput" type="text" placeholder="Contoh: Proyektor tidak menyala" required />
+            </label>
+            <label>
+              Kategori
+              <select id="categoryInput" required></select>
+            </label>
+            <label>
+              Lokasi
+              <input id="locationInput" type="text" placeholder="Contoh: Ruang B-102" required />
+            </label>
+            <label>
+              Deskripsi
+              <textarea id="descriptionInput" placeholder="Jelaskan masalah fasilitas secara singkat" required></textarea>
+            </label>
+            <button type="submit">Kirim Laporan</button>
+          </form>
+          <p id="reportMessage" class="message"></p>
+        </section>
+
+        <section class="panel">
+          <h3>Notifikasi</h3>
+          <div id="notificationList" class="notification-list"></div>
+        </section>
+      </div>
+
+      <section class="panel full-panel">
+        <div class="section-header">
+          <h3>Riwayat Laporan Saya</h3>
+          <button id="refreshButton" class="secondary-button small-button">Refresh</button>
+        </div>
+        <div id="reportList" class="report-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

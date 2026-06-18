@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KampusCare Admin</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">KC</div>
+        <div>
+          <h1>KampusCare</h1>
+          <p>Client Admin</p>
+        </div>
+      </div>
+
+      <div class="server-box">
+        <span>Arsitektur</span>
+        <strong>1 Server · 2 Client</strong>
+        <small>Auth · Report · Category · Status · Notification Service</small>
+      </div>
+
+      <div class="server-box checklist-box">
+        <span>Finalisasi</span>
+        <small>✓ Dashboard statistik</small>
+        <small>✓ Filter & pencarian laporan</small>
+        <small>✓ Database mahasiswa</small>
+        <small>✓ Siap deploy web</small>
+      </div>
+
+      <a href="/" class="side-link">Buka Client Mahasiswa</a>
+    </aside>
+
+    <section class="main-content">
+      <section id="loginSection" class="panel login-panel">
+        <p class="eyebrow">Admin Login</p>
+        <h2>Masuk sebagai Petugas</h2>
+        <p class="muted">Demo akun: <b>admin</b> / <b>admin123</b></p>
+        <form id="loginForm" class="form-grid">
+          <label>
+            Username
+            <input id="usernameInput" type="text" value="admin" required />
+          </label>
+          <label>
+            Password
+            <input id="passwordInput" type="password" value="admin123" required />
+          </label>
+          <button type="submit">Masuk Admin</button>
+        </form>
+        <p id="loginMessage" class="message"></p>
+      </section>
+
+      <section id="dashboardSection" class="dashboard hidden">
+        <div class="topbar">
+          <div>
+            <p class="eyebrow">Dashboard Admin</p>
+            <h2 id="welcomeText">Halo Admin</h2>
+            <p class="muted compact-muted">Kelola laporan fasilitas, kategori, dan database mahasiswa dari satu client admin.</p>
+          </div>
+          <button id="logoutButton" class="ghost-button">Keluar</button>
+        </div>
+
+        <div class="summary-grid summary-grid-six">
+          <div class="summary-card"><span>Total Laporan</span><strong id="totalText">0</strong></div>
+          <div class="summary-card"><span>Masuk</span><strong id="masukText">0</strong></div>
+          <div class="summary-card"><span>Diproses</span><strong id="diprosesText">0</strong></div>
+          <div class="summary-card"><span>Selesai</span><strong id="selesaiText">0</strong></div>
+          <div class="summary-card"><span>Ditolak</span><strong id="ditolakText">0</strong></div>
+          <div class="summary-card"><span>Mahasiswa</span><strong id="mahasiswaText">0</strong></div>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel report-panel">
+            <div class="section-header">
+              <div>
+                <h3>Daftar Laporan dari Mahasiswa</h3>
+                <p id="visibleReportText" class="muted compact-muted">Menampilkan 0 laporan.</p>
+              </div>
+              <div class="header-actions">
+                <button id="exportButton" class="secondary-button small-button">Export JSON</button>
+                <button id="refreshButton" class="secondary-button small-button">Refresh</button>
+              </div>
+            </div>
+
+            <div class="filter-box">
+              <label>
+                Cari Laporan
+                <input id="searchInput" type="search" placeholder="Cari judul, lokasi, kategori, pelapor..." />
+              </label>
+              <label>
+                Status
+                <select id="statusFilter">
+                  <option value="all">Semua Status</option>
+                </select>
+              </label>
+              <label>
+                Kategori
+                <select id="categoryFilter">
+                  <option value="all">Semua Kategori</option>
+                </select>
+              </label>
+              <label>
+                Urutan
+                <select id="sortFilter">
+                  <option value="newest">Terbaru</option>
+                  <option value="oldest">Terlama</option>
+                  <option value="title">Judul A-Z</option>
+                </select>
+              </label>
+              <button id="resetFilterButton" class="ghost-button small-button" type="button">Reset Filter</button>
+            </div>
+
+            <div id="reportList" class="report-list"></div>
+          </section>
+
+          <section class="panel">
+            <h3>Kelola Kategori</h3>
+            <form id="categoryForm" class="form-grid inline-form">
+              <label>
+                Nama Kategori
+                <input id="categoryNameInput" type="text" placeholder="Contoh: Speaker / Audio" required />
+              </label>
+              <button type="submit">Tambah</button>
+            </form>
+            <p id="categoryMessage" class="message"></p>
+            <div id="categoryList" class="category-list"></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="section-header">
+            <div>
+              <h3>Database Mahasiswa</h3>
+              <p class="muted compact-muted">Data ini otomatis masuk dari akun mahasiswa yang register lewat client mahasiswa.</p>
+            </div>
+            <button id="refreshUserButton" class="secondary-button small-button">Refresh Mahasiswa</button>
+          </div>
+          <div id="userList" class="user-list"></div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

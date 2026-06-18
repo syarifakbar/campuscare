@@ -1,0 +1,116 @@
+{
+  "users": [
+    {
+      "id": "u-admin-001",
+      "name": "Admin KampusCare",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "createdAt": "2026-06-18T09:39:32.216Z"
+    },
+    {
+      "id": "u-mhs-001",
+      "name": "Mahasiswa Demo",
+      "username": "mhs",
+      "password": "mhs123",
+      "role": "mahasiswa",
+      "createdAt": "2026-06-18T09:39:32.216Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-001",
+      "name": "AC / Pendingin Ruangan"
+    },
+    {
+      "id": "cat-002",
+      "name": "WiFi / Internet"
+    },
+    {
+      "id": "cat-003",
+      "name": "Proyektor"
+    },
+    {
+      "id": "cat-004",
+      "name": "Lampu"
+    },
+    {
+      "id": "cat-005",
+      "name": "Meja / Kursi"
+    },
+    {
+      "id": "cat-006",
+      "name": "Toilet"
+    },
+    {
+      "id": "cat-007",
+      "name": "Kebersihan Ruangan"
+    }
+  ],
+  "reports": [
+    {
+      "id": "rep-001",
+      "userId": "u-mhs-001",
+      "reporterName": "Mahasiswa Demo",
+      "title": "WiFi Lemot di Lab Komputer",
+      "category": "WiFi / Internet",
+      "location": "Lab Komputer 1",
+      "description": "Koneksi WiFi sering putus saat dipakai praktikum.",
+      "status": "Selesai",
+      "adminNote": "Sedang dicek oleh teknisi jaringan.",
+      "createdAt": "2026-06-18T09:39:32.216Z",
+      "updatedAt": "2026-06-18T11:25:57.522Z"
+    },
+    {
+      "id": "rep-002",
+      "userId": "u-mhs-001",
+      "reporterName": "Mahasiswa Demo",
+      "title": "Lampu Kelas Mati",
+      "category": "Lampu",
+      "location": "Ruang A-203",
+      "description": "Dua lampu bagian depan kelas mati.",
+      "status": "Selesai",
+      "adminNote": "",
+      "createdAt": "2026-06-18T09:39:32.217Z",
+      "updatedAt": "2026-06-18T11:26:07.060Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif-001",
+      "userId": "u-mhs-001",
+      "message": "Laporan WiFi Lemot di Lab Komputer sedang diproses.",
+      "createdAt": "2026-06-18T09:39:32.217Z"
+    },
+    {
+      "id": "notif-1781781957524-5761",
+      "userId": "u-mhs-001",
+      "message": "Status laporan \"WiFi Lemot di Lab Komputer\" berubah menjadi Selesai.",
+      "createdAt": "2026-06-18T11:25:57.527Z"
+    },
+    {
+      "id": "notif-1781781960034-8712",
+      "userId": "u-mhs-001",
+      "message": "Status laporan \"Lampu Kelas Mati\" berubah menjadi Masuk.",
+      "createdAt": "2026-06-18T11:26:00.034Z"
+    },
+    {
+      "id": "notif-1781781961336-3585",
+      "userId": "u-mhs-001",
+      "message": "Status laporan \"Lampu Kelas Mati\" berubah menjadi Masuk.",
+      "createdAt": "2026-06-18T11:26:01.336Z"
+    },
+    {
+      "id": "notif-1781781962177-2019",
+      "userId": "u-mhs-001",
+      "message": "Status laporan \"Lampu Kelas Mati\" berubah menjadi Masuk.",
+      "createdAt": "2026-06-18T11:26:02.177Z"
+    },
+    {
+      "id": "notif-1781781967061-8699",
+      "userId": "u-mhs-001",
+      "message": "Status laporan \"Lampu Kelas Mati\" berubah menjadi Selesai.",
+      "createdAt": "2026-06-18T11:26:07.061Z"
+    }
+  ]
+}

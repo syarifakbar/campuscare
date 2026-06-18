@@ -1,0 +1,23 @@
+{
+  "name": "kampuscare-web",
+  "version": "1.0.0",
+  "description": "KampusCare - 1 Server 2 Client Web Microservice Style",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "microservice",
+    "web-app",
+    "express",
+    "kampuscare"
+  ],
+  "author": "KampusCare Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

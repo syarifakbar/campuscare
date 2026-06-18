@@ -14,14 +14,14 @@ const runtimeDbPath = process.env.VERCEL
 const defaultDatabase = {
   users: [
     {
-      id: 1,
-      name: 'Admin Kampus',
+      id: 'u-admin-001',
+      name: 'Admin KampusCare',
       username: 'admin',
       password: 'admin123',
       role: 'admin'
     },
     {
-      id: 2,
+      id: 'u-mhs-001',
       name: 'Mahasiswa Demo',
       username: 'mhs',
       password: 'mhs123',
@@ -29,12 +29,13 @@ const defaultDatabase = {
     }
   ],
   categories: [
-    { id: 1, name: 'AC' },
-    { id: 2, name: 'WiFi' },
-    { id: 3, name: 'Proyektor' },
-    { id: 4, name: 'Lampu' },
-    { id: 5, name: 'Toilet' },
-    { id: 6, name: 'Kursi / Meja' }
+    { id: 'cat-001', name: 'AC / Pendingin Ruangan' },
+    { id: 'cat-002', name: 'WiFi / Internet' },
+    { id: 'cat-003', name: 'Proyektor' },
+    { id: 'cat-004', name: 'Lampu' },
+    { id: 'cat-005', name: 'Meja / Kursi' },
+    { id: 'cat-006', name: 'Toilet' },
+    { id: 'cat-007', name: 'Kebersihan Ruangan' }
   ],
   reports: [],
   notifications: []
@@ -97,19 +98,8 @@ function writeDatabase(data) {
   }
 }
 
-// Fungsi ini dipakai service lain untuk bikin ID baru.
-// Contoh: users, reports, categories, notifications.
-function createId(items) {
-  if (!Array.isArray(items) || items.length === 0) {
-    return 1;
-  }
-
-  const maxId = items.reduce((max, item) => {
-    const currentId = Number(item.id) || 0;
-    return currentId > max ? currentId : max;
-  }, 0);
-
-  return maxId + 1;
+function createId(prefix = 'id') {
+  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 }
 
 module.exports = {

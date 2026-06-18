@@ -2,18 +2,23 @@ const { readDatabase, writeDatabase, createId } = require('./databaseService');
 const { validateStatus } = require('./statusService');
 const { createNotification } = require('./notificationService');
 
+function sameId(a, b) {
+  return String(a) === String(b);
+}
+
 function getReports({ role, userId }) {
   const db = readDatabase();
+
   const reports = role === 'admin'
     ? db.reports
-    : db.reports.filter((item) => item.userId === userId);
+    : db.reports.filter((item) => sameId(item.userId, userId));
 
   return reports.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
 function getReportById(id) {
   const db = readDatabase();
-  return db.reports.find((item) => item.id === id) || null;
+  return db.reports.find((item) => sameId(item.id, id)) || null;
 }
 
 function createReport(payload) {
@@ -25,10 +30,11 @@ function createReport(payload) {
   }
 
   const now = new Date().toISOString();
+
   const report = {
     id: createId('rep'),
-    userId,
-    reporterName,
+    userId: String(userId),
+    reporterName: String(reporterName).trim(),
     title: String(title).trim(),
     category: String(category).trim(),
     location: String(location).trim(),
@@ -54,7 +60,8 @@ function updateReportStatus(id, status, adminNote) {
     throw new Error('Status laporan tidak valid.');
   }
 
-  const reportIndex = db.reports.findIndex((item) => item.id === id);
+  const reportIndex = db.reports.findIndex((item) => sameId(item.id, id));
+
   if (reportIndex === -1) {
     throw new Error('Laporan tidak ditemukan.');
   }
@@ -77,13 +84,17 @@ function updateReportStatus(id, status, adminNote) {
 function deleteReport(id) {
   const db = readDatabase();
   const beforeLength = db.reports.length;
-  db.reports = db.reports.filter((item) => item.id !== id);
+
+  db.reports = db.reports.filter((item) => !sameId(item.id, id));
+
   writeDatabase(db);
+
   return beforeLength !== db.reports.length;
 }
 
 function getReportStats() {
   const db = readDatabase();
+
   const total = db.reports.length;
   const masuk = db.reports.filter((item) => item.status === 'Masuk').length;
   const diproses = db.reports.filter((item) => item.status === 'Diproses').length;

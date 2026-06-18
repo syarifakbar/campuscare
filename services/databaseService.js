@@ -1,20 +1,27 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
-const dataDir = path.join(__dirname, '..', 'data');
-const dbPath = path.join(dataDir, 'db.json');
+const seedDbPath = path.join(__dirname, '..', 'data', 'db.json');
+
+// Di Vercel, folder project read-only.
+// Jadi kalau online di Vercel, database runtime pakai /tmp.
+// Kalau lokal, tetap pakai data/db.json.
+const runtimeDbPath = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'kampuscare-db.json')
+  : seedDbPath;
 
 const defaultDatabase = {
   users: [
     {
-      id: 'u-admin-001',
-      name: 'Admin KampusCare',
+      id: 1,
+      name: 'Admin Kampus',
       username: 'admin',
       password: 'admin123',
       role: 'admin'
     },
     {
-      id: 'u-mhs-001',
+      id: 2,
       name: 'Mahasiswa Demo',
       username: 'mhs',
       password: 'mhs123',
@@ -22,79 +29,77 @@ const defaultDatabase = {
     }
   ],
   categories: [
-    { id: 'cat-001', name: 'AC / Pendingin Ruangan' },
-    { id: 'cat-002', name: 'WiFi / Internet' },
-    { id: 'cat-003', name: 'Proyektor' },
-    { id: 'cat-004', name: 'Lampu' },
-    { id: 'cat-005', name: 'Meja / Kursi' },
-    { id: 'cat-006', name: 'Toilet' },
-    { id: 'cat-007', name: 'Kebersihan Ruangan' }
+    { id: 1, name: 'AC' },
+    { id: 2, name: 'WiFi' },
+    { id: 3, name: 'Proyektor' },
+    { id: 4, name: 'Lampu' },
+    { id: 5, name: 'Toilet' },
+    { id: 6, name: 'Kursi / Meja' }
   ],
-  reports: [
-    {
-      id: 'rep-001',
-      userId: 'u-mhs-001',
-      reporterName: 'Mahasiswa Demo',
-      title: 'WiFi Lemot di Lab Komputer',
-      category: 'WiFi / Internet',
-      location: 'Lab Komputer 1',
-      description: 'Koneksi WiFi sering putus saat dipakai praktikum.',
-      status: 'Diproses',
-      adminNote: 'Sedang dicek oleh teknisi jaringan.',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    },
-    {
-      id: 'rep-002',
-      userId: 'u-mhs-001',
-      reporterName: 'Mahasiswa Demo',
-      title: 'Lampu Kelas Mati',
-      category: 'Lampu',
-      location: 'Ruang A-203',
-      description: 'Dua lampu bagian depan kelas mati.',
-      status: 'Masuk',
-      adminNote: '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
-  ],
-  notifications: [
-    {
-      id: 'notif-001',
-      userId: 'u-mhs-001',
-      message: 'Laporan WiFi Lemot di Lab Komputer sedang diproses.',
-      createdAt: new Date().toISOString()
-    }
-  ]
+  reports: [],
+  notifications: []
 };
 
-function initializeDatabase() {
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
+function normalizeDatabase(db) {
+  return {
+    users: Array.isArray(db.users) ? db.users : defaultDatabase.users,
+    categories: Array.isArray(db.categories) ? db.categories : defaultDatabase.categories,
+    reports: Array.isArray(db.reports) ? db.reports : [],
+    notifications: Array.isArray(db.notifications) ? db.notifications : []
+  };
+}
 
-  if (!fs.existsSync(dbPath)) {
-    fs.writeFileSync(dbPath, JSON.stringify(defaultDatabase, null, 2));
+function ensureDatabaseFile() {
+  try {
+    if (fs.existsSync(runtimeDbPath)) {
+      return;
+    }
+
+    if (fs.existsSync(seedDbPath)) {
+      const seedData = fs.readFileSync(seedDbPath, 'utf-8');
+      fs.writeFileSync(runtimeDbPath, seedData);
+      return;
+    }
+
+    fs.writeFileSync(runtimeDbPath, JSON.stringify(defaultDatabase, null, 2));
+  } catch (error) {
+    console.error('Gagal membuat database runtime:', error.message);
   }
+}
+
+// Ini yang dibutuhkan server.js
+function initializeDatabase() {
+  ensureDatabaseFile();
 }
 
 function readDatabase() {
-  initializeDatabase();
-  const rawData = fs.readFileSync(dbPath, 'utf8');
-  return JSON.parse(rawData);
+  ensureDatabaseFile();
+
+  try {
+    const rawData = fs.readFileSync(runtimeDbPath, 'utf-8');
+    const parsedData = JSON.parse(rawData);
+    return normalizeDatabase(parsedData);
+  } catch (error) {
+    console.error('Gagal membaca database:', error.message);
+    return defaultDatabase;
+  }
 }
 
 function writeDatabase(data) {
-  fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
-}
+  ensureDatabaseFile();
 
-function createId(prefix) {
-  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+  try {
+    const normalizedData = normalizeDatabase(data);
+    fs.writeFileSync(runtimeDbPath, JSON.stringify(normalizedData, null, 2));
+    return normalizedData;
+  } catch (error) {
+    console.error('Gagal menulis database:', error.message);
+    throw new Error(error.message);
+  }
 }
 
 module.exports = {
   initializeDatabase,
   readDatabase,
-  writeDatabase,
-  createId
+  writeDatabase
 };
